@@ -1,0 +1,41 @@
+*Importar:
+import C:\Users\.... \Documents\... \doc_ejemplo.xls
+*Abrir hoja de trabajo
+wfopen C:\Users\.... \Documents\... \doc_ejemplo.wf1
+*Grupo, util para hacer graficos o ver los datos de manera conjunta
+Group DATA x1 x2 x3 x4
+*genr o series, genera una variable
+series lx1 = log(x1)
+*formula, acutaliza los datos
+frml x5=(x2/x3)
+*crear nueva pagina, frecuencia mensual (M)
+pagecreate (wf=mensual1) M 1990m1 2021m9
+*regresion lineal simple
+equation eq1.ls y c x1 x2 x3 x4 x5
+*regresion generalisada// para solucionar heteroscedasticidad
+equation eq2.glm c x1 x2 x3 x4 x5
+*crear nueva pagina con frecuencia de datos mensual (M)
+pagecreate(page=mensual) m 1990m1 2021m9
+*copiar datos de la pagina original a la nueva pagina
+copy doc_ejemplo \x1 x1_mensual
+*Test econométricos:
+**wald
+eq2.wald c(2)=1
+*ramsey-reset
+eq1.reset
+*heretosedasticidad
+eq1.white
+*correlograma-autocorrelacion
+eq1.correlogram
+*histograma-normalidad
+eq1.hist
+*autocorrelacion
+eq1.auto
+*intervalo de confianza
+eq1.cinterval
+*vif- multicolinealidad
+eq1.varinf
+*quiebre estructural de chow
+eq1.chow
+**SALVAR DOCUMENTO
+wfsave(#) C:\Users\.... \Documents\... \doc_ejemplo.wf1
